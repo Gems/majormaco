@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
+
 if [ -z "$1" ]; then
     cat "${BASH_SOURCE[0]}" | grep -Eo '^\s*##.*$' | sed -E 's/^.*##//g'
 
@@ -16,7 +18,7 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-command="cp -r"
+command="cp -rf"
 installation_dir="/usr/local/opt/majormaco"
 
 while [ -n "$1" ]; do
@@ -24,7 +26,7 @@ while [ -n "$1" ]; do
     shift
 done
 
-dir="$( cd "$( dirname "$( readlink "${BASH_SOURCE[0]}" )" )/../" && pwd )"
+
 
 proceed()
 {
@@ -84,8 +86,11 @@ user=$(whoami)
 
 security add-generic-password -U -a $user -s $keyName -w $pass
 
-# ensure installation directory
+rm -rf $installation_dir
+
 mkdir -p $installation_dir
+
+rm -f ~/Library/LaunchAgents/majormaco.plist
 
 `$command $dir/unlock.sh $installation_dir/`
 `$command $dir/bin $installation_dir/`
