@@ -1,10 +1,10 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 # lockfile -0 -r 1 -l 4 -s 0 '/tmp/unlock.sh.lock' &>/dev/null || exit 3
 
-source=$(readlink "${BASH_SOURCE[0]}")
-
-dir="$( cd "$( dirname "$source" )" && pwd )"
+dir="$( cd "$( dirname "$( readlink "${BASH_SOURCE[0]}" )" )" && pwd )"
 
 cd $dir
 
