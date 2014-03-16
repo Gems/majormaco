@@ -1,10 +1,16 @@
 # majormaco
 
-Your mac concierge
+Your macbook concierge.
+
+Majormaco formed from the word 'majordomo', that means butler or concierge.
 
 ## Installation
 
-*TBD*
+Clone repository.
+
+Go to 'majormaco' directory and run `install/install.sh`. Follow instructions from the script to setup your installation.
+
+Happy and secure macbooking! :)
 
 ## Special thanks to
 
