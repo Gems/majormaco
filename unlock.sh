@@ -46,11 +46,11 @@ getWiFi()
 
 getBluetooth()
 {
-	btlist=$(echo "$bt" | tr '[:lower:]' '[:upper:]')
+	btlist=$(echo "$bt" | awk '{print toupper($0)}')
 
 	result=$(system_profiler -xml SPBluetoothDataType | xpath "boolean(/plist/array/dict/array/dict/array/dict/dict[contains(string, '$btlist')]/key[.='device_isconnected']/following-sibling::string[1][.='attrib_Yes']"  2>&1 | sed -E 's/^.+Value: //g;s/1/OK/g;s/0//g')
 
-    btlist=$(echo "$bt" | tr '[:upper:]' '[:lower:]' | sed 's/ /|/g')
+    btlist=$(echo "$bt" | awk '{print tolower($0)}' | sed 's/ /|/g')
 
     for i in $(jot 2); do
 	    if [ -z "$result" ]; then
