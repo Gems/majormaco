@@ -127,7 +127,7 @@ rm -f ~/Library/LaunchAgents/majormaco.plist
 
 launchctl load ~/Library/LaunchAgents/majormaco.plist
 
-cat $dir/install/wakeup.sh | sed -E "s/{KEY}/$keyName/g;s/{WIFI}/$wifi/g;s/{BLUETOOTH}/$bt/g" > $installation_dir/wakeup.sh
+cat $dir/install/wakeup.sh | sed -E "s/{KEY}/$keyName/g;s/{INTERFACE}/$en/g;s/{WIFI}/$wifi/g;s/{BLUETOOTH}/$bt/g" > $installation_dir/wakeup.sh
 
 chmod +x $installation_dir/wakeup.sh
 

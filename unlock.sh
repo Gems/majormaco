@@ -8,13 +8,13 @@ dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd $dir
 
-key=  wifi=  en="en0"  bt=
+key=  wifi=  interface="en0"  bt=
 
 while true; do
   case "$1" in
     --key ) key="$2"; shift 2 ;;
+    --interface ) interface="$2"; shift 2;;
     --wifi ) wifi="$2"; shift 2;;
-    --wifi-interface ) en="$2"; shift 2;;
     --bt ) bt=$(echo "$2" | sed 's/:/-/g'); shift 2 ;;
     -- ) shift; break ;;
     * ) break ;;
@@ -34,7 +34,7 @@ openSesame()
 
 getWiFi()
 {
-    networkinfo=$(networksetup -getairportnetwork $en | head -1; test ${PIPESTATUS[0]} -eq 0)
+    networkinfo=$(networksetup -getairportnetwork $interface | head -1; test ${PIPESTATUS[0]} -eq 0)
 
 	if [ "$?" != 0 ]; then
 		echo "$networkinfo" >&2

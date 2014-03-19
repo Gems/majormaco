@@ -25,6 +25,8 @@
         printf("The device failed to connect\n");
         return 1;
     }
+
+    printf("OK. Connected\n");
     return 0;
 }
 
