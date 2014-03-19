@@ -26,7 +26,36 @@ while [ -n "$1" ]; do
     shift
 done
 
+if [ -z "$(which xcodebuild)" ]; then
+    cat << EOF
+There is no 'xcodebuild'. Install XCode to build sources or download them manually and copy to 'bin/' from:
 
+ - https://github.com/marshallbrekka/btutil/blob/master/build/btutil
+ - http://www.bernhard-baehr.de/sleepwatcher_2.2.tgz
+
+EOF
+
+    exit 1
+fi
+
+echo "Building sleepwatcher..."
+
+cd $dir/third-party/sleepwatcher-2.2/sources/
+
+xcodebuild
+
+echo "Building btutil..."
+
+cd $dir/third-party/btutil
+
+xcodebuild
+
+cd $dir
+
+mkdir -p bin/
+
+cp third-party/btutil/build/Release/btutil bin/
+cp third-party/sleepwatcher-2.2/sources/build/Default/sleepwatcher bin/
 
 proceed()
 {
