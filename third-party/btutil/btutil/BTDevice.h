@@ -12,7 +12,9 @@
 @interface BTDevice : NSObject
 + (void) list: (IOBluetoothDevice*)device;
 + (int) connect:(IOBluetoothDevice*)device;
++ (int) connect:(IOBluetoothDevice*)device withRSSIThreshold:(NSNumber *) RSSIThreshold andTimeout:(NSNumber *) timeout;
 + (int) connectAddress:(NSString*)address;
++ (int) connectAddress:(NSString *)address withRSSIThreshold:(NSNumber *) RSSIThreshold andTimeout:(NSNumber *) timeout;
 + (int) disconnect:(IOBluetoothDevice*)device;
 + (int) disconnectAddress:(NSString*)address;
 @end

@@ -8,7 +8,7 @@ dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd $dir
 
-key=  wifi=  interface="en0"  bt=
+key=  wifi=  interface="en0"  bt=  rssi=  timeout=
 
 while true; do
   case "$1" in
@@ -16,6 +16,7 @@ while true; do
     --interface ) interface="$2"; shift 2;;
     --wifi ) wifi="$2"; shift 2;;
     --bt ) bt=$(echo "$2" | sed 's/:/-/g'); shift 2 ;;
+    --bt-rssi ) rssi=$2; timeout=$3; shift 3 ;;
     -- ) shift; break ;;
     * ) break ;;
   esac
@@ -46,19 +47,22 @@ getWiFi()
 
 getBluetooth()
 {
-	btlist=$(echo "$bt" | awk '{print toupper($0)}')
+    if [ -z "$rssi" ]; then
+    	btlist=$(echo "$bt" | awk '{print toupper($0)}')
 
-	result=$(system_profiler -xml SPBluetoothDataType | xpath "boolean(/plist/array/dict/array/dict/array/dict/dict[contains(string, '$btlist')]/key[.='device_isconnected']/following-sibling::string[1][.='attrib_Yes']"  2>&1 | sed -E 's/^.+Value: //g;s/1/OK/g;s/0//g')
+    	result=$(system_profiler -xml SPBluetoothDataType | xpath "boolean(/plist/array/dict/array/dict/array/dict/dict[contains(string, '$btlist')]/key[.='device_isconnected']/following-sibling::string[1][.='attrib_Yes']"  2>&1 | sed -E 's/^.+Value: //g;s/1/OK/g;s/0//g')
+    fi
 
     btlist=$(echo "$bt" | awk '{print tolower($0)}' | sed 's/ /|/g')
 
     for i in $(jot 2); do
-	    if [ -z "$result" ]; then
+	    if [ -z "$result" -a -z "$rssi" ]; then
             result=$(bin/btutil list | grep -Eo "^ON ($btlist)")
         fi
 
         if [ -z "$result" ]; then
-            result=$(bin/btutil list | grep -Eo "($btlist)" | xargs -P 2 -n 1 bin/btutil connect | grep -Eo '^OK.')
+            args=1 && [ -n "$rssi" ] && args=3
+            result=$(bin/btutil list | sed -E "s/(-[a-z0-9]+[ ])/\1$rssi $timeout /g;" | grep -Eo "($btlist)(\s[-0-9]+\s[-0-9]+)?" | xargs -P 2 -n $args bin/btutil connect | grep -Eo "^OK.")
         fi
 
 		if [ -n "$result" ]; then
@@ -69,7 +73,9 @@ getBluetooth()
 	echo "$result"
 }
 
-[ -z "$(getBluetooth)" ] && syslog -s -l notice 'No Bluetooth found' && exit 1
+btc=$(getBluetooth)
+
+[ -z "$btc" ] && syslog -s -l notice 'No Bluetooth found' && exit 1
 
 syslog -s -l notice "Bluetooth matched"
 
