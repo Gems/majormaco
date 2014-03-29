@@ -4,7 +4,8 @@ set -e
 
 # lockfile -0 -r 1 -l 4 -s 0 '/tmp/unlock.sh.lock' &>/dev/null || exit 3
 
-dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+script=$(readlink "${BASH_SOURCE[0]}")
+dir="$( cd "$( dirname "$script" )" && pwd )"
 
 cd $dir
 
