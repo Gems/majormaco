@@ -39,9 +39,12 @@
 
         int till = (int)currentTime + [timeout intValue];
         int rssi;
+
+        printf("\n");
         
         while ((int) time(NULL) < till) {
             rssi = (int) [device rawRSSI];
+            printf("\033[1A%ddBm\n", rssi);
             
             if (rssi != 127 && rssi >= [RSSIThreshold intValue]) {
                 break;
@@ -50,7 +53,9 @@
             [NSThread sleepForTimeInterval:0.016];
         }
         
-        if (rssi < [RSSIThreshold intValue]) {
+        printf("\n");
+        
+        if (rssi == 127 || rssi < [RSSIThreshold intValue]) {
             printf("RSSI threshold is not passed\n");
             return 1;
         }

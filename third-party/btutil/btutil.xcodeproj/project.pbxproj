@@ -51,7 +51,6 @@
 		AB2A4A7A1676EAE400289C34 = {
 			isa = PBXGroup;
 			children = (
-				AB2A4AB61676FFEE00289C34 /* IOBluetooth.framework */,
 				AB2A4A8B1676EAE400289C34 /* btutil */,
 				AB2A4A881676EAE400289C34 /* Frameworks */,
 				AB2A4A861676EAE400289C34 /* Products */,
@@ -69,6 +68,7 @@
 		AB2A4A881676EAE400289C34 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AB2A4AB61676FFEE00289C34 /* IOBluetooth.framework */,
 				AB2A4A891676EAE400289C34 /* Foundation.framework */,
 			);
 			name = Frameworks;
