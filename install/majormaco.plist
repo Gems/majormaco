@@ -8,8 +8,7 @@
 	<array>
 		<string>/usr/local/opt/majormaco/bin/sleepwatcher</string>
 		<string>-V</string>
-		<!-- -W allows the script to run only when display awake from the sleep. -->
-		<string>-W /usr/local/opt/majormaco/wakeup.sh</string>
+		<string>-w /usr/local/opt/majormaco/wakeup.sh</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
